@@ -8,6 +8,7 @@
 #include "modes/ProjectM.hpp"
 #include "modes/RivalsOfAether.hpp"
 #include "modes/Ultimate.hpp"
+#include "modes/Rivals2.hpp"
 
 extern KeyboardMode *current_kb_mode;
 
@@ -56,7 +57,13 @@ void select_mode(CommunicationBackend *backend) {
     } else if (inputs.mod_y && !inputs.mod_x && inputs.start) {
         if (inputs.l) {
             set_mode(backend, new DefaultKeyboardMode(socd::SOCD_2IP));
+        } else if (inputs.b) {
+            set_mode(
+                backend,
+                new Rivals2(socd::SOCD_2IP, { .crouch_walk_os = false })
+            );
         }
+        
     }
 }
 
