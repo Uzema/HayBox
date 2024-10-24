@@ -28,6 +28,7 @@ void Rivals2::UpdateDigitalOutputs(InputState &inputs, OutputState &outputs) {
     outputs.x = inputs.x;
     outputs.y = inputs.y;
     outputs.buttonR = inputs.z;
+    outputs.buttonL = inputs.lightshield;
     if (inputs.nunchuk_connected) {
         outputs.triggerLDigital = inputs.nunchuk_z;
     } else {
@@ -56,7 +57,7 @@ void Rivals2::UpdateAnalogOutputs(InputState &inputs, OutputState &outputs) {
         inputs.left,
         inputs.right,
         inputs.down,
-        inputs.up,
+        inputs.up || inputs.midshield,
         inputs.c_left,
         inputs.c_right,
         inputs.c_down,
@@ -67,7 +68,7 @@ void Rivals2::UpdateAnalogOutputs(InputState &inputs, OutputState &outputs) {
         outputs
     );
 
-    bool shield_button_pressed = inputs.l || inputs.r || inputs.lightshield || inputs.midshield;
+    bool shield_button_pressed = inputs.l || inputs.r;
     if (directions.diagonal) {
         // q1/2 = 7000 7000
         outputs.leftStickX = 128 + (directions.x * 56);
@@ -250,20 +251,6 @@ void Rivals2::UpdateAnalogOutputs(InputState &inputs, OutputState &outputs) {
     // trajectory).
     if (_horizontal_socd && !directions.vertical) {
         outputs.leftStickX = 128 + (directions.x * 80);
-    }
-
-    if (inputs.lightshield) {
-        outputs.triggerRAnalog = 49;
-    }
-    if (inputs.midshield) {
-        outputs.triggerRAnalog = 94;
-    }
-
-    if (outputs.triggerLDigital) {
-        outputs.triggerLAnalog = 140;
-    }
-    if (outputs.triggerRDigital) {
-        outputs.triggerRAnalog = 140;
     }
 
     // Shut off C-stick when using D-Pad layer.
